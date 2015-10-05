@@ -18,6 +18,8 @@
  */
 package org.apache.deltaspike.testcontrol.api.junit;
 
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
 import junit.framework.Assert;
 import org.apache.deltaspike.cdise.api.CdiContainer;
 import org.apache.deltaspike.cdise.api.CdiContainerLoader;
@@ -51,6 +53,7 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Singleton;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -139,7 +142,25 @@ public class CdiTestRunner extends BlockJUnit4ClassRunner
             }
         }
 
-        super.run(runNotifier);
+        if (getTestClass().getJavaClass().isAnnotationPresent(CucumberOptions.class))
+        {
+            try
+            {
+                testContext.runCucumber(runNotifier,getTestClass());
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            catch (InitializationError initializationError)
+            {
+                initializationError.printStackTrace();
+            }
+        }
+        else
+        {
+            super.run(runNotifier);
+        }
     }
 
     private static synchronized void addLogRunListener(RunNotifier notifier, int identityHashCode)
@@ -818,6 +839,14 @@ public class CdiTestRunner extends BlockJUnit4ClassRunner
                     }
                 }
             }
+        }
+
+
+        public void runCucumber(RunNotifier runNotifier, TestClass testClass) throws IOException, InitializationError
+        {
+            applyBeforeClassConfig(testClass.getJavaClass());
+            new Cucumber(testClass.getJavaClass()).run(runNotifier);
+            applyAfterClassConfig();
         }
     }
 

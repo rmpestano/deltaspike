@@ -16,24 +16,34 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.deltaspike.test.testcontrol.uc012;
+package org.apache.deltaspike.test.testcontrol.uc014;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import org.apache.deltaspike.test.category.SeCategory;
+import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
 
-@ApplicationScoped
-public class ApplicationScopedTestBeanClient
+import cucumber.api.CucumberOptions;
+
+//Usually NOT needed! Currently only needed due to our arquillian-setup
+@Category(SeCategory.class)
+
+
+
+@RunWith(CdiTestRunner.class)
+@CucumberOptions(
+    features = "src/test/resources/features/uc014.feature"
+)
+public class CucumberCDITest
 {
-    @Inject
-    private ApplicationScopedTestBean testBean;
 
-    public int getNextValue()
+
+    @Test
+    public void fakeIt()
     {
-        this.testBean.increaseValue();
-        return this.testBean.getValue();
+
     }
 
-    public void increment(int amount){
-        this.testBean.setValue(testBean.getValue()+amount);
-    }
+
 }

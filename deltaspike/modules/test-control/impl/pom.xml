@@ -64,6 +64,8 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>provided</scope>
+            <!--  cucumber runner works with junit 4.11 or newer -->
+           <version>4.11</version>
         </dependency>
 
         <dependency>
@@ -118,6 +120,20 @@
             <artifactId>deltaspike-core-impl</artifactId>
             <scope>test</scope>
         </dependency>
+
+       <dependency>
+           <groupId>info.cukes</groupId>
+           <artifactId>cucumber-junit</artifactId>
+           <version>1.2.4</version>
+           <scope>test</scope>
+       </dependency>
+
+       <dependency>
+           <groupId>info.cukes</groupId>
+           <artifactId>cucumber-java</artifactId>
+           <version>1.2.4</version>
+       </dependency>
+
     </dependencies>
 
     <build>
@@ -135,6 +151,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+           <!--  cucumber runner works with surefire version 2.14 or newer-->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <skipTests>false</skipTests>
+                </configuration>
             </plugin>
         </plugins>
     </build>
