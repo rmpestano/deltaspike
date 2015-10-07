@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 package org.apache.deltaspike.testcontrol.api.cucumber;
 
 import java.io.IOException;
@@ -37,11 +55,16 @@ import cucumber.runtime.junit.FeatureRunner;
 /**
  * Created by pestano on 05/10/15.
  */
-public class CdiCucumberTestRunner extends Cucumber {
+public class CdiCucumberTestRunner extends Cucumber
+{
 
     private static final Logger LOGGER = Logger.getLogger(CdiCucumberTestRunner.class.getName());
 
     private static final boolean USE_TEST_CLASS_AS_CDI_BEAN;
+
+    private static ThreadLocal<Boolean> automaticScopeHandlingActive = new ThreadLocal<Boolean>();
+
+    private static ThreadLocal<CdiCucumberTestRunner> currentTestRunner = new ThreadLocal<CdiCucumberTestRunner>();
 
     private boolean containerStarted = false;
 
@@ -50,13 +73,12 @@ public class CdiCucumberTestRunner extends Cucumber {
         USE_TEST_CLASS_AS_CDI_BEAN = TestBaseConfig.ContainerIntegration.USE_TEST_CLASS_AS_CDI_BEAN;
     }
 
-    private static ThreadLocal<Boolean> automaticScopeHandlingActive = new ThreadLocal<Boolean>();
 
-    private static ThreadLocal<CdiCucumberTestRunner> currentTestRunner = new ThreadLocal<CdiCucumberTestRunner>();
 
     private ContainerAwareTestContext testContext;
 
-    public CdiCucumberTestRunner(Class<?> testClass) throws InitializationError, IOException {
+    public CdiCucumberTestRunner(Class<?> testClass) throws InitializationError, IOException
+    {
         super(testClass);
         TestControl testControl = testClass.getAnnotation(TestControl.class);
         this.testContext = new ContainerAwareTestContext(testControl, null);
@@ -78,7 +100,8 @@ public class CdiCucumberTestRunner extends Cucumber {
     }
 
     @Override
-    public void run(RunNotifier runNotifier) {
+    public void run(RunNotifier runNotifier)
+    {
         CdiContainer container = CdiContainerLoader.getCdiContainer();
 
         if (!containerStarted)
@@ -169,13 +192,12 @@ public class CdiCucumberTestRunner extends Cucumber {
         {
             CdiContainer container = CdiContainerLoader.getCdiContainer();
 
-                if (!isContainerStarted())
-                {
-                    container.boot(CdiTestSuiteRunner.getTestContainerConfig());
-                    containerStarted = true;
-
-                    bootExternalContainers(testClass);
-                }
+            if (!isContainerStarted())
+            {
+                container.boot(CdiTestSuiteRunner.getTestContainerConfig());
+                containerStarted = true;
+                bootExternalContainers(testClass);
+            }
 
             List<Class<? extends Annotation>> restrictedScopes = new ArrayList<Class<? extends Annotation>>();
 
@@ -207,9 +229,11 @@ public class CdiCucumberTestRunner extends Cucumber {
             {
                 List<ExternalContainer> configuredExternalContainers =
                         ServiceUtils.loadServiceImplementations(ExternalContainer.class);
-                Collections.sort(configuredExternalContainers, new Comparator<ExternalContainer>() {
+                Collections.sort(configuredExternalContainers, new Comparator<ExternalContainer>()
+                {
                     @Override
-                    public int compare(ExternalContainer ec1, ExternalContainer ec2) {
+                    public int compare(ExternalContainer ec1, ExternalContainer ec2)
+                    {
                         return ec1.getOrdinal() > ec2.getOrdinal() ? 1 : -1;
                     }
                 });
@@ -272,7 +296,8 @@ public class CdiCucumberTestRunner extends Cucumber {
             }
         }
 
-        private boolean isStopContainerAllowed() {
+        private boolean isStopContainerAllowed()
+        {
             return true;
         }
 
