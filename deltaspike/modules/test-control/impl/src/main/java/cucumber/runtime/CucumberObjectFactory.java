@@ -26,6 +26,7 @@ public class CucumberObjectFactory implements ObjectFactory
   @Override
   public void stop()
   {
+    definitions.clear();
   }
 
   @Override
@@ -43,4 +44,6 @@ public class CucumberObjectFactory implements ObjectFactory
     }
     return (T) definitions.get(clazz);
   }
+
+
 }

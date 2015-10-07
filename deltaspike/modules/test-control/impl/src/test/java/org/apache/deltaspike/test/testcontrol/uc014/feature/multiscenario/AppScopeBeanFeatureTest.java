@@ -16,11 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.deltaspike.test.testcontrol.uc014;
+package org.apache.deltaspike.test.testcontrol.uc014.feature.multiscenario;
 
+import org.apache.deltaspike.core.api.projectstage.ProjectStage;
 import org.apache.deltaspike.test.category.SeCategory;
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.Test;
+import org.apache.deltaspike.testcontrol.api.TestControl;
+import org.apache.deltaspike.testcontrol.api.cucumber.CdiCucumberTestRunner;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
@@ -31,19 +32,16 @@ import cucumber.api.CucumberOptions;
 
 
 
-@RunWith(CdiTestRunner.class)
+@RunWith(CdiCucumberTestRunner.class)
+@TestControl(projectStage = ProjectStage.Production.class)
 @CucumberOptions(
-    features = "src/test/resources/features/uc014.feature"
+    features = {"src/test/resources/features/uc014.feature","src/test/resources/features/uc0142.feature"}
 )
-public class CucumberCDITest
+public class AppScopeBeanFeatureTest
 {
 
 
-    @Test
-    public void fakeIt()
-    {
 
-    }
 
 
 }

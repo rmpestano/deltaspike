@@ -141,26 +141,7 @@ public class CdiTestRunner extends BlockJUnit4ClassRunner
                 addLogRunListener(runNotifier, identityHashCode);
             }
         }
-
-        if (getTestClass().getJavaClass().isAnnotationPresent(CucumberOptions.class))
-        {
-            try
-            {
-                testContext.runCucumber(runNotifier,getTestClass());
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            catch (InitializationError initializationError)
-            {
-                initializationError.printStackTrace();
-            }
-        }
-        else
-        {
-            super.run(runNotifier);
-        }
+        super.run(runNotifier);
     }
 
     private static synchronized void addLogRunListener(RunNotifier notifier, int identityHashCode)
@@ -842,12 +823,6 @@ public class CdiTestRunner extends BlockJUnit4ClassRunner
         }
 
 
-        public void runCucumber(RunNotifier runNotifier, TestClass testClass) throws IOException, InitializationError
-        {
-            applyBeforeClassConfig(testClass.getJavaClass());
-            new Cucumber(testClass.getJavaClass()).run(runNotifier);
-            applyAfterClassConfig();
-        }
     }
 
     public static Boolean isAutomaticScopeHandlingActive()
