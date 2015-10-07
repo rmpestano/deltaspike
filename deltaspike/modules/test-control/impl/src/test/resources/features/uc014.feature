@@ -14,3 +14,6 @@ Feature: ApplicationScoped bean test
   | 1     | 3      |
   | 0     | 2      |
   | 10    | 12     |
+
+  Scenario: Bean value must be kept across scenarios
+    Then test bean value is inherited from previuous scenario

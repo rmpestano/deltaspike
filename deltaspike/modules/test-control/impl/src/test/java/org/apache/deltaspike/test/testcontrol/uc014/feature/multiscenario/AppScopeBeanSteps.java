@@ -2,6 +2,7 @@ package org.apache.deltaspike.test.testcontrol.uc014.feature.multiscenario;
 
 import javax.inject.Inject;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -15,6 +16,7 @@ import cucumber.api.java.en.Then;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by rafael-pestano on 05/10/2015.
@@ -58,7 +60,8 @@ public class AppScopeBeanSteps {
     assertEquals(result, this.testBean.getValue());
   }
 
-
-
-
+  @Then("^test bean value is inherited from previuous scenario$")
+  public void test_bean_value_is_inherited_from_previuous_scenario() throws Throwable {
+    assertEquals(testBean.getValue(), 12);//12 is set in the last step on previous scenario
+  }
 }
